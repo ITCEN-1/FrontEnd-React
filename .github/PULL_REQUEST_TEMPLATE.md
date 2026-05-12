@@ -1,12 +1,3 @@
----
-name: Pull Requet
-about: Suggest an idea for this project
-title: ''
-labels: ''
-assignees: ''
-
----
-
 ## 💡 개요 (Outline)
 <!-- 기능 개발의 개요이나 해결하려는 문제 상황을 기술해주세요. -->
 
