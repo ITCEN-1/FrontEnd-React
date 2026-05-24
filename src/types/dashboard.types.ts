@@ -36,3 +36,21 @@ export type Ranking = {
 };
 
 export type InfraType = "SUBWAY" | "HOSPITAL" | "LIBRARY" | "LARGE_STORE";
+
+export type DongDetailInfo = {
+  surveyId: number;
+  dongCode: number;
+  dongName: string;
+  latitude: number;
+  longitude: number;
+  commuteTime: number;
+  commuteMessage: string;
+
+  hospitalCount: number;
+  subwayCount: number;
+  libraryCount: number;
+  largeStoreCount: number;
+
+  jeonseCount: number | null;
+  wolseCount: number | null;
+};

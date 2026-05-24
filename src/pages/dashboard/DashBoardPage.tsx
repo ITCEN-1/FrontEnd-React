@@ -1,11 +1,11 @@
-import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
+import { CustomOverlayMap, Map } from "react-kakao-maps-sdk";
 import Header from "../../components/layout/Header";
 import DashBoardSideBar from "../../components/layout/DashBoardSideBar.tsx";
 import { useEffect, useRef } from "react";
 import { getSurveyAndRecommendedDong } from "../../services/dashboard.api.ts";
 import { useFocusStore } from "../../store/mapfocus.store.ts";
 import { useDashboardStore } from "../../store/dashboard.store.ts";
-import type { Ranking } from "../../types/dashboard.types.ts";
+import type { HistoryDTO, Ranking } from "../../types/dashboard.types.ts";
 import CustomMarker from "../../components/common/CustomMarker.tsx";
 
 const DashBoardPage = () => {
@@ -25,18 +25,27 @@ const DashBoardPage = () => {
     map.setCenter(latlng);
     map.setLevel(position.level);
   }, [position]);
-  // useEffect(() => {
-  //     const fetchData = async () => {
-  //         try {
-  //             const data = await getSurveyAndRecommendedDong(1);
-  //             console.log(data);
-  //         } catch (error) {
-  //             console.error(error);
-  //         }
-  //     }
 
-  //     fetchData();
-  // }, [])
+  // useEffect(() => {
+  //   const fetchData = async (): Promise<BaseResponse<HistoryDTO>> => {
+  //     try {
+  //       const surveyData = await getSurveyAndRecommendedDong(data?.surveyDto.surveyId ?? 8);
+  //       // console.log(surveyData);
+  //       return surveyData;
+  //     } catch (error) {
+  //       console.error(error);
+  //       throw error;
+  //     }
+  //   };
+
+  //   fetchData()
+  //     .then((response) => {
+  //       return response.content;
+  //     })
+  //     .then((content) => {
+  //       useDashboardStore.setState({ data: content });
+  //     });
+  // }, []);
 
   return (
     <div>

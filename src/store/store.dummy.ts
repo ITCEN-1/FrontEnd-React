@@ -1,4 +1,4 @@
-import type { HistoryDTO } from "../types/dashboard.types";
+import type { DongDetailInfo, HistoryDTO } from "../types/dashboard.types";
 
 export const jeonseDummy: HistoryDTO = {
   surveyDto: {
@@ -246,4 +246,22 @@ export const wolseDummy: HistoryDTO = {
       commuteTime: 69,
     },
   ],
+};
+
+export const dummyDongDetail: DongDetailInfo = {
+  surveyId: 42,
+  dongCode: 1111011900, // 예: 서울 종로구 세종로 코드 예시
+  dongName: "세종로",
+  latitude: 37.5729,
+  longitude: 126.9779,
+  commuteTime: 25,
+  commuteMessage: "지하철 환승 없이 직행으로 이동 가능하여 출퇴근이 매우 편리합니다.",
+
+  hospitalCount: 5,
+  subwayCount: 2,
+  libraryCount: 1,
+  largeStoreCount: 3,
+
+  jeonseCount: 14,
+  wolseCount: 28,
 };

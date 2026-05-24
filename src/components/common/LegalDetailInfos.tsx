@@ -6,6 +6,8 @@ import { useDashboardStore } from "../../store/dashboard.store.js";
 import { parseMinuteToHourTime } from "../../utils/time.util.js";
 import { parsePriceToOutput } from "../../utils/price.util.js";
 import { isWolse } from "../../utils/survey.util.js";
+// API연동 전 dummy데이터
+import { dummyDongDetail } from "../../store/store.dummy.js";
 
 const infra = {
   SUBWAY: {
@@ -64,10 +66,10 @@ function LegalDetailInfos() {
         <section>
           <h3 className={"text-[14px] font-semibold text-(--fg-1) mb-2.5"}>주변 인프라</h3>
           <div className={"grid grid-cols-2 gap-2"}>
-            <InfraIcon infraType={"SUBWAY"} number={5} color={"blue"} />
-            <InfraIcon infraType={"HOSPITAL"} number={3} color={"red"} />
-            <InfraIcon infraType={"LIBRARY"} number={2} color={"green"} />
-            <InfraIcon infraType={"LARGE_STORE"} number={8} color={"orange"} />
+            <InfraIcon infraType={"SUBWAY"} number={dummyDongDetail.subwayCount} color={"blue"} />
+            <InfraIcon infraType={"HOSPITAL"} number={dummyDongDetail.hospitalCount} color={"red"} />
+            <InfraIcon infraType={"LIBRARY"} number={dummyDongDetail.libraryCount} color={"green"} />
+            <InfraIcon infraType={"LARGE_STORE"} number={dummyDongDetail.largeStoreCount} color={"orange"} />
           </div>
           <p className={"text-[11.5px] text-(--fg-3) mt-2"}>각 항목을 클릭하면 지도에 위치가 표시돼요.</p>
         </section>
@@ -76,19 +78,13 @@ function LegalDetailInfos() {
           <h3 className={"text-[14px] font-semibold text-(--fg-1) mb-2.5"}>매물 현황</h3>
           <div className={"flex gap-2"}>
             <HousePriceInfo
-              title={wolse ? "보증금" : "전세금"}
-              minPrice={wolse ? (survey?.depositMin ?? -1) : (survey?.jeonseMin ?? -1)}
-              maxPrice={wolse ? (survey?.depositMax ?? -1) : (survey?.jeonseMax ?? -1)}
+              title={wolse ? "월세" : "전세"}
+              depositMin={wolse ? (survey?.depositMin ?? -1) : (survey?.jeonseMin ?? -1)}
+              depositMax={wolse ? (survey?.depositMax ?? -1) : (survey?.jeonseMax ?? -1)}
+              monthlyMin={wolse ? (survey?.monthlyMin ?? -1) : undefined}
+              monthlyMax={wolse ? (survey?.monthlyMax ?? -1) : undefined}
               number={50}
             />
-            {wolse && (
-              <HousePriceInfo
-                title={"월세금"}
-                minPrice={survey?.monthlyMin ?? -1}
-                maxPrice={survey?.monthlyMax ?? -1}
-                number={30}
-              />
-            )}
           </div>
         </section>
         {/* 직장과의 통근 시간 */}
@@ -142,14 +138,18 @@ function InfraIcon({ infraType, number, color }: { infraType: InfraType; number:
 
 function HousePriceInfo({
   title,
-  minPrice,
-  maxPrice,
+  depositMin,
+  depositMax,
   number,
+  monthlyMin,
+  monthlyMax,
 }: {
   title: string;
-  minPrice: number;
-  maxPrice: number;
+  depositMin: number;
+  depositMax: number;
   number: number;
+  monthlyMin?: number;
+  monthlyMax?: number;
 }) {
   return (
     <div className={"flex gap-2 flex-1"}>
@@ -160,8 +160,13 @@ function HousePriceInfo({
           <small className={"text-[12px] font-semibold text-(--fg-2)"}>건</small>
         </p>
         <span className={"text-[11px] text-(--fg-3) mt-0.5"}>
-          {parsePriceToOutput(minPrice)}~{parsePriceToOutput(maxPrice)} 구간
+          보증금 {parsePriceToOutput(depositMin)}~{parsePriceToOutput(depositMax)} /
         </span>
+        {monthlyMin && monthlyMax && (
+          <span className={"text-[11px] text-(--fg-3) mt-0.5"}>
+            월세금 {parsePriceToOutput(monthlyMin)}~{parsePriceToOutput(monthlyMax)}
+          </span>
+        )}
       </div>
     </div>
   );

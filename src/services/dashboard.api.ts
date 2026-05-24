@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
 export async function getSurveyAndRecommendedDong(userId: number) {
-    const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/historyTest?userId=${userId}`);
+  const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/history/${userId}`);
 
-    return response.data;
+  return response.data;
 }
