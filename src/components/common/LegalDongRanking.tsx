@@ -1,9 +1,11 @@
 import { useDashboardStore } from "../../store/dashboard.store.ts";
 import type { Ranking } from "../../types/dashboard.types.ts";
 import { parseMinuteToHourTime } from "../../utils/time.util.ts";
+import { useFocusStore } from "../../store/mapfocus.store.ts";
 
 function LegalDongRanking() {
   const { data } = useDashboardStore();
+  const { setFocusPosition } = useFocusStore();
   const rankings = data?.rankings ?? [];
 
   return (
@@ -14,8 +16,17 @@ function LegalDongRanking() {
       {rankings ? (
         rankings.map((ranking: Ranking) => (
           <div
+            key={ranking.dongCode}
             className={
               "flex rounded-(--r-lg) py-3 px-3.5 items-center gap-3 shadow-(--shadow-xs) border border-solid border-(--border-1) cursor-pointer transition-all duration-120 ease-out hover:border-(--dp-coral-200) hover:shadow-(--shadow-md)"
+            }
+            onClick={() =>
+              setFocusPosition({
+                latitude: ranking.latitude,
+                longitude: ranking.longitude,
+                dongCode: ranking.dongCode,
+                level: 4,
+              })
             }
           >
             <div
@@ -31,7 +42,7 @@ function LegalDongRanking() {
             <div className={"flex flex-col"}>
               <span className={"text-[11.5px] text-(--fg-2) text-right"}>통근 시간</span>
               <span className={"text-right font-display text-[18px] font-800 text-(--primary)"}>
-                {parseMinuteToHourTime(ranking.commuteTime)}
+                {data!.surveyDto.workPlaceAddress ? parseMinuteToHourTime(ranking.commuteTime) : "목적지가 없습니다."}
               </span>
             </div>
           </div>

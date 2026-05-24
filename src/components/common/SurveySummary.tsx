@@ -3,7 +3,7 @@ import { Icon } from "./primitives.jsx";
 import { useDashboardStore } from "../../store/dashboard.store.js";
 import { parsePriceToOutput } from "../../utils/price.util.js";
 import { PREFERENCE_LEVEL } from "../../utils/constants.js";
-import type { SurveyDto } from "../../types/dashboard.types.js";
+import { isWolse } from "../../utils/survey.util.js";
 
 function SurveySummary() {
   const { data } = useDashboardStore();
@@ -12,8 +12,6 @@ function SurveySummary() {
   if (survey) {
     wolse = isWolse(survey);
   }
-  console.log(data);
-  console.log(wolse);
 
   return (
     <div className={"p-4 flex flex-col gap-2.5"}>
@@ -112,7 +110,9 @@ function SurveySummary() {
               <h4 className={"text-[13px] font-bold text-(--dp-navy-900) mb-3"}>직장 위치</h4>
               <div className={"flex items-center gap-2"}>
                 <Icon name={"briefcase"} size={16}></Icon>
-                <span className={"text-[14px] text-(--fg-1) font-semibold"}>{survey.workPlaceAddress}</span>
+                <span className={"text-[14px] text-(--fg-1) font-semibold"}>
+                  {survey.workPlaceAddress ?? "목적지가 없습니다."}
+                </span>
               </div>
               <div className={"text-[12px] text-(--fg-2) mt-1.5"}>
                 대중교통 기준 통근 소요 시간을 점수에 반영합니다.
@@ -129,12 +129,6 @@ function SurveySummary() {
       )}
     </div>
   );
-}
-
-function isWolse(survey: SurveyDto) {
-  const { jeonseMin, jeonseMax } = survey;
-
-  return jeonseMin === null && jeonseMax === null;
 }
 
 export default SurveySummary;

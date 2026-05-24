@@ -36,6 +36,8 @@ export const jeonseDummy: HistoryDTO = {
       dongCode: 1171010500,
       districtName: "송파구",
       dongName: "석촌동",
+      latitude: 37.50356463,
+      longitude: 127.1036674,
       commuteTime: 71,
     },
     {
@@ -43,6 +45,8 @@ export const jeonseDummy: HistoryDTO = {
       dongCode: 1162010100,
       districtName: "관악구",
       dongName: "봉천동",
+      latitude: 37.48253849,
+      longitude: 126.9521652,
       commuteTime: 43,
     },
     {
@@ -50,6 +54,8 @@ export const jeonseDummy: HistoryDTO = {
       dongCode: 1126010200,
       districtName: "중랑구",
       dongName: "상봉동",
+      latitude: 37.59676882,
+      longitude: 127.0887543,
       commuteTime: 74,
     },
     {
@@ -57,6 +63,8 @@ export const jeonseDummy: HistoryDTO = {
       dongCode: 1171010100,
       districtName: "송파구",
       dongName: "잠실동",
+      latitude: 37.51195647,
+      longitude: 127.0882828,
       commuteTime: 54,
     },
     {
@@ -64,6 +72,8 @@ export const jeonseDummy: HistoryDTO = {
       dongCode: 1162010200,
       districtName: "관악구",
       dongName: "신림동",
+      latitude: 37.48945207,
+      longitude: 126.9261855,
       commuteTime: 57,
     },
     {
@@ -71,6 +81,8 @@ export const jeonseDummy: HistoryDTO = {
       dongCode: 1171010600,
       districtName: "송파구",
       dongName: "삼전동",
+      latitude: 37.50272334,
+      longitude: 127.0925197,
       commuteTime: 68,
     },
     {
@@ -78,6 +90,8 @@ export const jeonseDummy: HistoryDTO = {
       dongCode: 1171010700,
       districtName: "송파구",
       dongName: "가락동",
+      latitude: 37.49654217,
+      longitude: 127.1057294,
       commuteTime: 73,
     },
     {
@@ -85,6 +99,8 @@ export const jeonseDummy: HistoryDTO = {
       dongCode: 1126010100,
       districtName: "중랑구",
       dongName: "면목동",
+      latitude: 37.58037158,
+      longitude: 127.0876616,
       commuteTime: 68,
     },
     {
@@ -92,6 +108,8 @@ export const jeonseDummy: HistoryDTO = {
       dongCode: 1126010300,
       districtName: "중랑구",
       dongName: "중화동",
+      latitude: 37.59946182,
+      longitude: 127.0773203,
       commuteTime: 78,
     },
     {
@@ -99,6 +117,8 @@ export const jeonseDummy: HistoryDTO = {
       dongCode: 1171010400,
       districtName: "송파구",
       dongName: "송파동",
+      latitude: 37.50609292,
+      longitude: 127.1095792,
       commuteTime: 69,
     },
   ],
@@ -111,9 +131,9 @@ export const wolseDummy: HistoryDTO = {
     jeonseMin: null,
     jeonseMax: null,
     monthlyMin: 30,
-    monthlyMax: 100,
-    depositMin: 5000,
-    depositMax: 10000,
+    monthlyMax: 60,
+    depositMin: 1000,
+    depositMax: 20000,
     preferenceLargeStore: "MIDDLE",
     preferenceHospital: "MIDDLE",
     preferenceSubway: "HIGH",
@@ -140,6 +160,8 @@ export const wolseDummy: HistoryDTO = {
       dongCode: 1171010500,
       districtName: "송파구",
       dongName: "석촌동",
+      latitude: 37.50356463,
+      longitude: 127.1036674,
       commuteTime: 71,
     },
     {
@@ -147,6 +169,8 @@ export const wolseDummy: HistoryDTO = {
       dongCode: 1162010100,
       districtName: "관악구",
       dongName: "봉천동",
+      latitude: 37.48253849,
+      longitude: 126.9521652,
       commuteTime: 43,
     },
     {
@@ -154,6 +178,8 @@ export const wolseDummy: HistoryDTO = {
       dongCode: 1126010200,
       districtName: "중랑구",
       dongName: "상봉동",
+      latitude: 37.59676882,
+      longitude: 127.0887543,
       commuteTime: 74,
     },
     {
@@ -161,6 +187,8 @@ export const wolseDummy: HistoryDTO = {
       dongCode: 1171010100,
       districtName: "송파구",
       dongName: "잠실동",
+      latitude: 37.51195647,
+      longitude: 127.0882828,
       commuteTime: 54,
     },
     {
@@ -168,6 +196,8 @@ export const wolseDummy: HistoryDTO = {
       dongCode: 1162010200,
       districtName: "관악구",
       dongName: "신림동",
+      latitude: 37.48945207,
+      longitude: 126.9261855,
       commuteTime: 57,
     },
     {
@@ -175,6 +205,8 @@ export const wolseDummy: HistoryDTO = {
       dongCode: 1171010600,
       districtName: "송파구",
       dongName: "삼전동",
+      latitude: 37.50272334,
+      longitude: 127.0925197,
       commuteTime: 68,
     },
     {
@@ -182,6 +214,8 @@ export const wolseDummy: HistoryDTO = {
       dongCode: 1171010700,
       districtName: "송파구",
       dongName: "가락동",
+      latitude: 37.49654217,
+      longitude: 127.1057294,
       commuteTime: 73,
     },
     {
@@ -189,6 +223,8 @@ export const wolseDummy: HistoryDTO = {
       dongCode: 1126010100,
       districtName: "중랑구",
       dongName: "면목동",
+      latitude: 37.58037158,
+      longitude: 127.0876616,
       commuteTime: 68,
     },
     {
@@ -196,6 +232,8 @@ export const wolseDummy: HistoryDTO = {
       dongCode: 1126010300,
       districtName: "중랑구",
       dongName: "중화동",
+      latitude: 37.59946182,
+      longitude: 127.0773203,
       commuteTime: 78,
     },
     {
@@ -203,6 +241,8 @@ export const wolseDummy: HistoryDTO = {
       dongCode: 1171010400,
       districtName: "송파구",
       dongName: "송파동",
+      latitude: 37.50609292,
+      longitude: 127.1095792,
       commuteTime: 69,
     },
   ],

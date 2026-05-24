@@ -25,11 +25,14 @@ export type District = {
   districtName: string;
 };
 
-// ranking에서는 dongCode만 있는데 구 이름과 법정동명도 포함해야 한다.
 export type Ranking = {
   ranking: number;
   dongCode: number;
   districtName: string;
   dongName: string;
+  latitude: number;
+  longitude: number;
   commuteTime: number;
 };
+
+export type InfraType = "SUBWAY" | "HOSPITAL" | "LIBRARY" | "LARGE_STORE";
