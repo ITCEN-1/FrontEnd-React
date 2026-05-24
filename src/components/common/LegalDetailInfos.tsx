@@ -58,7 +58,8 @@ function LegalDetailInfos() {
           {dongInfo.districtName} {dongInfo.dongName}
         </h2>
         <p className={"text-[13px] text-(--fg-2)>"}>
-          직장까지 약 <b>{parseMinuteToHourTime(dongInfo.commuteTime)}</b> · 매물 <b>124건</b>
+          직장까지 약 <b>{parseMinuteToHourTime(dongInfo.commuteTime)}</b> · 매물{" "}
+          <b>{wolse ? dummyDongDetail.wolseCount : dummyDongDetail.jeonseCount}건</b>
         </p>
       </div>
       <div className={"pt-4 pb-8 px-5 flex flex-col gap-5.5"}>
@@ -66,10 +67,10 @@ function LegalDetailInfos() {
         <section>
           <h3 className={"text-[14px] font-semibold text-(--fg-1) mb-2.5"}>주변 인프라</h3>
           <div className={"grid grid-cols-2 gap-2"}>
-            <InfraIcon infraType={"SUBWAY"} number={dummyDongDetail.subwayCount} color={"blue"} />
-            <InfraIcon infraType={"HOSPITAL"} number={dummyDongDetail.hospitalCount} color={"red"} />
-            <InfraIcon infraType={"LIBRARY"} number={dummyDongDetail.libraryCount} color={"green"} />
-            <InfraIcon infraType={"LARGE_STORE"} number={dummyDongDetail.largeStoreCount} color={"orange"} />
+            <InfraIcon infraType={"SUBWAY"} number={dummyDongDetail.subwayCount ?? 0} color={"blue"} />
+            <InfraIcon infraType={"HOSPITAL"} number={dummyDongDetail.hospitalCount ?? 0} color={"red"} />
+            <InfraIcon infraType={"LIBRARY"} number={dummyDongDetail.libraryCount ?? 0} color={"green"} />
+            <InfraIcon infraType={"LARGE_STORE"} number={dummyDongDetail.largeStoreCount ?? 0} color={"orange"} />
           </div>
           <p className={"text-[11.5px] text-(--fg-3) mt-2"}>각 항목을 클릭하면 지도에 위치가 표시돼요.</p>
         </section>
@@ -83,7 +84,7 @@ function LegalDetailInfos() {
               depositMax={wolse ? (survey?.depositMax ?? -1) : (survey?.jeonseMax ?? -1)}
               monthlyMin={wolse ? (survey?.monthlyMin ?? -1) : undefined}
               monthlyMax={wolse ? (survey?.monthlyMax ?? -1) : undefined}
-              number={50}
+              number={wolse ? (dummyDongDetail.wolseCount ?? 0) : (dummyDongDetail.jeonseCount ?? 0)}
             />
           </div>
         </section>
