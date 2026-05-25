@@ -2,7 +2,6 @@ import legalDong from "../assets/legal_dong.json" with { type: "json" };
 
 export function findLegalDongCoordinates(legal_dong_code: number | string) {
   const { features } = legalDong as any;
-  console.log(`Legal Dong_Code: ${legal_dong_code}`);
   const feature = features.find((f: any) => String(legal_dong_code) === String(f.properties["EMD_CD"] + "00"));
 
   if (!feature) return [];

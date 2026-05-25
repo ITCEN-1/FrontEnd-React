@@ -9,6 +9,7 @@ import type { HistoryDTO, Ranking } from "../../types/dashboard.types.ts";
 import CustomMarker from "../../components/common/CustomMarker.tsx";
 import { Polygon } from "react-kakao-maps-sdk";
 import { findLegalDongCoordinates } from "../../utils/map.util.ts";
+import WorkplaceMarker from "../../components/common/WorkplaceMarker.tsx";
 import React from "react";
 
 const DashBoardPage = () => {
@@ -64,12 +65,15 @@ const DashBoardPage = () => {
             mapRef.current = map;
           }}
         >
+          {data && data.surveyDto.workPlaceAddress && (
+            <WorkplaceMarker workPlaceAddress={data.surveyDto.workPlaceAddress} />
+          )}
           {rankings &&
             rankings.map((ranking: Ranking) => {
               const isHovered = ranking.dongCode === hoverDongCode;
               return (
                 <React.Fragment key={ranking.dongCode}>
-                  {/* 마커 */}
+                  {/* 법정동 마커 */}
                   <CustomOverlayMap position={{ lat: ranking.latitude, lng: ranking.longitude }} yAnchor={1}>
                     <CustomMarker rankPinImage="/rank-pin.svg" ranking={ranking} />
                   </CustomOverlayMap>
