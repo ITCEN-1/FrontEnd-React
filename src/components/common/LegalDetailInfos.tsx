@@ -1,7 +1,7 @@
 //@ts-ignore
 import { Icon } from "./primitives.jsx";
 import type { InfraType, Ranking } from "../../types/dashboard.types.js";
-import { useFocusStore } from "../../store/mapfocus.store.js";
+import { useFocusStore, useHoverDongStore } from "../../store/mapfocus.store.js";
 import { useDashboardStore } from "../../store/dashboard.store.js";
 import { parseMinuteToHourTime } from "../../utils/time.util.js";
 import { parsePriceToOutput } from "../../utils/price.util.js";
@@ -30,6 +30,7 @@ const infra = {
 
 function LegalDetailInfos() {
   const { position, clearFocusPosition } = useFocusStore();
+  const { clearHoverDongCode } = useHoverDongStore();
   const { data } = useDashboardStore();
   const survey = data?.surveyDto;
   const wolse = survey ? isWolse(survey) : false;
@@ -41,7 +42,10 @@ function LegalDetailInfos() {
         className={
           "flex items-center gap-2 px-4.5 py-3.5 bg-white border-b border-(--border-1) text-[13px] font-semibold text-(--fg-2) cursor-pointer text-left w-full sticky top-0 z-2 transition-colors duration-(--dur-fast) ease-(--ease-out) hover:text-(--primary) hover:bg-(--dp-coral-50)"
         }
-        onClick={() => clearFocusPosition()}
+        onClick={() => {
+          clearFocusPosition();
+          clearHoverDongCode();
+        }}
       >
         <span className={"text-[16px]"}>←</span>
         이전으로 돌아가기

@@ -1,12 +1,13 @@
 import { useDashboardStore } from "../../store/dashboard.store.ts";
 import type { Ranking } from "../../types/dashboard.types.ts";
 import { parseMinuteToHourTime } from "../../utils/time.util.ts";
-import { useFocusStore } from "../../store/mapfocus.store.ts";
+import { useFocusStore, useHoverDongStore } from "../../store/mapfocus.store.ts";
 
 function LegalDongRanking() {
   const { data } = useDashboardStore();
   const { setFocusPosition } = useFocusStore();
   const rankings = data?.rankings ?? [];
+  const { setHoverDongCode, clearHoverDongCode } = useHoverDongStore();
 
   return (
     <div className={"flex flex-col p-4 gap-2.5"}>
@@ -28,6 +29,8 @@ function LegalDongRanking() {
                 level: 4,
               })
             }
+            onMouseOver={() => setHoverDongCode(ranking.dongCode)}
+            onMouseOut={() => clearHoverDongCode()}
           >
             <div
               className={`w-7 h-7 font-extrabold rounded-[50%] flex items-center justify-center text-[13px] ${rankingColorStyle(ranking.ranking)}`}

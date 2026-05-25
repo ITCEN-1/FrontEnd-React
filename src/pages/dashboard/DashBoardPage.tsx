@@ -3,14 +3,18 @@ import Header from "../../components/layout/Header";
 import DashBoardSideBar from "../../components/layout/DashBoardSideBar.tsx";
 import { useEffect, useRef } from "react";
 import { getSurveyAndRecommendedDong } from "../../services/dashboard.api.ts";
-import { useFocusStore } from "../../store/mapfocus.store.ts";
+import { useFocusStore, useHoverDongStore } from "../../store/mapfocus.store.ts";
 import { useDashboardStore } from "../../store/dashboard.store.ts";
 import type { HistoryDTO, Ranking } from "../../types/dashboard.types.ts";
 import CustomMarker from "../../components/common/CustomMarker.tsx";
+import { Polygon } from "react-kakao-maps-sdk";
+import { findLegalDongCoordinates } from "../../utils/map.util.ts";
+import React from "react";
 
 const DashBoardPage = () => {
   const { position } = useFocusStore();
   const { data } = useDashboardStore();
+  const { hoverDongCode, setHoverDongCode, clearHoverDongCode } = useHoverDongStore();
   const rankings = data?.rankings;
   const mapRef = useRef<kakao.maps.Map | null>(null);
 
@@ -61,15 +65,39 @@ const DashBoardPage = () => {
           }}
         >
           {rankings &&
-            rankings.map((ranking: Ranking) => (
-              <CustomOverlayMap
-                key={ranking.dongCode}
-                position={{ lat: ranking.latitude, lng: ranking.longitude }}
-                yAnchor={1}
-              >
-                <CustomMarker rankPinImage="/rank-pin.svg" ranking={ranking} />
-              </CustomOverlayMap>
-            ))}
+            rankings.map((ranking: Ranking) => {
+              const isHovered = ranking.dongCode === hoverDongCode;
+              return (
+                <React.Fragment key={ranking.dongCode}>
+                  {/* 마커 */}
+                  <CustomOverlayMap position={{ lat: ranking.latitude, lng: ranking.longitude }} yAnchor={1}>
+                    <CustomMarker rankPinImage="/rank-pin.svg" ranking={ranking} />
+                  </CustomOverlayMap>
+                  {/* 법정동 영역 표시 */}
+                  {findLegalDongCoordinates(ranking.dongCode).map((path: any) => (
+                    <Polygon
+                      path={path}
+                      strokeWeight={isHovered ? 4 : 2}
+                      strokeColor={"#ff6b4a"}
+                      strokeOpacity={0.4}
+                      strokeStyle={"solid"}
+                      fillColor={isHovered ? "#ff6b4a" : "#fff1ed"}
+                      fillOpacity={0.2}
+                      onMouseover={() => {
+                        if (!position) {
+                          setHoverDongCode(ranking.dongCode);
+                        }
+                      }}
+                      onMouseout={() => {
+                        if (!position) {
+                          clearHoverDongCode();
+                        }
+                      }}
+                    />
+                  ))}
+                </React.Fragment>
+              );
+            })}
         </Map>
         <DashBoardSideBar />
       </section>

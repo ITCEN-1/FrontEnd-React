@@ -12,3 +12,15 @@ export const useFocusStore = create<MapFocusStore>((set) => ({
   setFocusPosition: (position) => set({ position }),
   clearFocusPosition: () => set({ position: null }),
 }));
+
+interface HoverDongStore {
+  hoverDongCode: number | null;
+  setHoverDongCode: (hoverDongCode: number) => void;
+  clearHoverDongCode: () => void;
+}
+
+export const useHoverDongStore = create<HoverDongStore>((set) => ({
+  hoverDongCode: null,
+  setHoverDongCode: (hoverDongCode) => set({ hoverDongCode }),
+  clearHoverDongCode: () => set({ hoverDongCode: null }),
+}));
