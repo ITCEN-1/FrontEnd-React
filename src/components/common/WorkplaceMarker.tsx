@@ -14,7 +14,6 @@ function WorkplaceMarker({ workPlaceAddress }: { workPlaceAddress: string }) {
 
         const coords = await getLatLngFromKeyword(workPlaceAddress);
         setPosition(coords);
-        console.log(coords);
       } catch (error) {
         console.error("주소 변환 실패:", error);
       }
@@ -23,7 +22,6 @@ function WorkplaceMarker({ workPlaceAddress }: { workPlaceAddress: string }) {
   }, []);
 
   if (!position) {
-    console.log("없음");
     return;
   }
 
