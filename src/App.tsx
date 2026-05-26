@@ -1,13 +1,20 @@
-import './App.css'
-import DashBoardPage from "./pages/dashboard/DashBoardPage.tsx";
+import { BrowserRouter } from "react-router-dom";
+import "./App.css";
+import DashBoardPage from "./pages/DashBoardPage.tsx";
+import HistoryPage from "./pages/HistoryPage.tsx";
+import { Routes, Route } from "react-router-dom";
+import Header from "./components/layout/Header.tsx";
 
 function App() {
-
   return (
-      <>
-          <DashBoardPage />
-      </>
-  )
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<DashBoardPage />}></Route>
+        <Route path="/history" element={<HistoryPage />}></Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
