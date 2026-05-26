@@ -1,10 +1,11 @@
 import './App.css'
+import DashBoardPage from "./pages/dashboard/DashBoardPage.tsx";
 
 function App() {
 
   return (
       <>
-        <h1 className={"text-red-500 text-3xl font-bold"}>안녕</h1>
+          <DashBoardPage />
       </>
   )
 }
