@@ -1,9 +1,32 @@
 //@ts-ignore
 import { Icon } from "../components/common/primitives.jsx";
 import HistoryCard from "../components/common/HistoryCard.js";
-import { historyItems } from "../store/history.dummy.js";
+import { getHistories } from "../services/history.api.js";
+import { useEffect, useState } from "react";
+import type { HistoryDTO } from "../types/dashboard.types.js";
 
 function HistoryPage() {
+  const [histories, setHistories] = useState<HistoryDTO[]>();
+
+  useEffect(() => {
+    async function fetchHistories() {
+      try {
+        const response = await getHistories();
+
+        return response;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    }
+
+    fetchHistories()
+      .then((response) => response.data.content)
+      .then((contents) => {
+        setHistories(contents);
+      });
+  }, []);
+
   return (
     <div className="p-8">
       <header className="flex justify-between items-end mb-6">
@@ -16,9 +39,11 @@ function HistoryPage() {
         </button>
       </header>
       <div className={"flex flex-col gap-3"}>
-        {historyItems.map((history, idx) => (
-          <HistoryCard key={history.surveyDto.surveyId} data={history} isFirst={idx === 0} />
-        ))}
+        {histories &&
+          histories.map((history, idx) => {
+            console.log(history);
+            return <HistoryCard key={history.surveyDto.surveyId} data={history} isFirst={idx === 0} />;
+          })}
       </div>
     </div>
   );
