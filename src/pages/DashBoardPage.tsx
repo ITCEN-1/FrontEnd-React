@@ -1,15 +1,14 @@
 import { CustomOverlayMap, Map } from "react-kakao-maps-sdk";
-import Header from "../../components/layout/Header";
-import DashBoardSideBar from "../../components/layout/DashBoardSideBar.tsx";
+import DashBoardSideBar from "../components/layout/DashBoardSideBar.tsx";
 import { useEffect, useRef } from "react";
-import { getSurveyAndRecommendedDong } from "../../services/dashboard.api.ts";
-import { useFocusStore, useHoverDongStore } from "../../store/mapfocus.store.ts";
-import { useDashboardStore } from "../../store/dashboard.store.ts";
-import type { HistoryDTO, Ranking } from "../../types/dashboard.types.ts";
-import CustomMarker from "../../components/common/CustomMarker.tsx";
+import { getSurveyAndRecommendedDong } from "../services/dashboard.api.ts";
+import { useFocusStore, useHoverDongStore } from "../store/mapfocus.store.ts";
+import { useDashboardStore } from "../store/dashboard.store.ts";
+import type { HistoryDTO, Ranking } from "../types/dashboard.types.ts";
+import CustomMarker from "../components/common/CustomMarker.tsx";
 import { Polygon } from "react-kakao-maps-sdk";
-import { findLegalDongCoordinates } from "../../utils/map.util.ts";
-import WorkplaceMarker from "../../components/common/WorkplaceMarker.tsx";
+import { findLegalDongCoordinates } from "../utils/map.util.ts";
+import WorkplaceMarker from "../components/common/WorkplaceMarker.tsx";
 import React from "react";
 
 const DashBoardPage = () => {
@@ -54,7 +53,6 @@ const DashBoardPage = () => {
 
   return (
     <div>
-      <Header />
       <section className={"grid grid-cols-[1fr_var(--dp-sidebar-w,400px)] h-[calc(100vh-64px)]"}>
         <Map
           center={{ lat: 37.53609444, lng: 126.9675222 }}
