@@ -2,12 +2,12 @@
 import { Icon } from "./primitives.jsx";
 import type { InfraType, Ranking, DongDetailInfo } from "../../types/dashboard.types.js";
 import { useFocusStore, useHoverDongStore } from "../../store/mapfocus.store.js";
-import { useDashboardStore, useInfraLocationStore } from "../../store/dashboard.store.js";
+import { useDashboardStore, useInfraLocationStore, useDongDetailStore } from "../../store/dashboard.store.js";
 import { parseMinuteToHourTime } from "../../utils/time.util.js";
 import { parsePriceToOutput } from "../../utils/price.util.js";
 import { isWolse } from "../../utils/survey.util.js";
 import { getInfraDatas, getInfraCntDatas } from "../../services/dashboard.api.js";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const infra = {
   SUBWAY: {
@@ -36,7 +36,7 @@ function LegalDetailInfos() {
   const survey = data?.surveyDto;
   const wolse = survey ? isWolse(survey) : false;
   const dongInfo: Ranking = data?.rankings.find((ranking) => ranking.dongCode === position?.dongCode)!;
-  const [infraDetail, setInfraDetail] = useState<DongDetailInfo>();
+  const { dongDetail, setDongDetail } = useDongDetailStore();
 
   useEffect(() => {
     const fetchDongInfraCnt = async () => {
@@ -46,9 +46,9 @@ function LegalDetailInfos() {
     };
 
     fetchDongInfraCnt().then((response) => {
-      setInfraDetail(response.content);
+      setDongDetail(response.content);
     });
-  }, []);
+  }, [dongDetail]);
 
   return (
     <div className={"flex flex-col"}>
@@ -78,7 +78,7 @@ function LegalDetailInfos() {
         </h2>
         <p className={"text-[13px] text-(--fg-2)>"}>
           직장까지 약 <b>{parseMinuteToHourTime(dongInfo.commuteTime)}</b> · 매물{" "}
-          <b>{wolse ? infraDetail?.wolseCount : infraDetail?.jeonseCount}건</b>
+          <b>{wolse ? dongDetail?.wolseCount : dongDetail?.jeonseCount}건</b>
         </p>
       </div>
       <div className={"pt-4 pb-8 px-5 flex flex-col gap-5.5"}>
@@ -88,25 +88,25 @@ function LegalDetailInfos() {
           <div className={"grid grid-cols-2 gap-2"}>
             <InfraIcon
               infraType={"SUBWAY"}
-              number={infraDetail?.subwayCount ?? 0}
+              number={dongDetail?.subwayCount ?? 0}
               color={"blue"}
               dongCode={position!.dongCode}
             />
             <InfraIcon
               infraType={"HOSPITAL"}
-              number={infraDetail?.hospitalCount ?? 0}
+              number={dongDetail?.hospitalCount ?? 0}
               color={"red"}
               dongCode={position!.dongCode}
             />
             <InfraIcon
               infraType={"LIBRARY"}
-              number={infraDetail?.libraryCount ?? 0}
+              number={dongDetail?.libraryCount ?? 0}
               color={"green"}
               dongCode={position!.dongCode}
             />
             <InfraIcon
               infraType={"LARGE_STORE"}
-              number={infraDetail?.largeStoreCount ?? 0}
+              number={dongDetail?.largeStoreCount ?? 0}
               color={"orange"}
               dongCode={position!.dongCode}
             />
@@ -123,7 +123,7 @@ function LegalDetailInfos() {
               depositMax={wolse ? (survey?.depositMax ?? -1) : (survey?.jeonseMax ?? -1)}
               monthlyMin={wolse ? (survey?.monthlyMin ?? -1) : undefined}
               monthlyMax={wolse ? (survey?.monthlyMax ?? -1) : undefined}
-              number={wolse ? (infraDetail?.wolseCount ?? 0) : (infraDetail?.jeonseCount ?? 0)}
+              number={wolse ? (dongDetail?.wolseCount ?? 0) : (dongDetail?.jeonseCount ?? 0)}
             />
           </div>
         </section>
