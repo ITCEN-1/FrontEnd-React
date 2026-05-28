@@ -21,7 +21,7 @@
   height: 460px;
   background: var(--bg);
   color: var(--text);
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: "KNPS Kkomi", sans-serif;
   overflow: hidden;
 }
 
@@ -71,8 +71,8 @@
 }
 
 .map :global(.district-label) {
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 9.5px;
+  font-family: "KNPS Kkomi", sans-serif;
+  font-size: 12px;
   font-weight: 700;
   fill: rgba(181, 58, 28, 0.7);
   pointer-events: none;
@@ -85,4 +85,15 @@
 .map :global(.district-label.highlighted) {
   fill: var(--dp-coral-600);
   font-size: 11px;
+}
+
+.map :global(.district-path.selected) {
+  fill: var(--dp-coral-500);
+  stroke: var(--dp-coral-700);
+  stroke-width: 1.5;
+}
+
+.map :global(.district-label.selected) {
+  fill: #180606;
+  font-size: 14px;
 }

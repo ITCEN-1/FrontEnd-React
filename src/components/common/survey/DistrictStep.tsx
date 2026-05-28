@@ -65,12 +65,11 @@ type DistrictFeature = SeoulDistrictsGeoJSON["features"][number];
 
 export interface SeoulMapProps { // SeoulMap 컴포넌트의 prop 타입 정의
   padding?: number;
-  onDistrictHover?: (props: SeoulDistrictProperties | null) => void;
   setDistricts: Dispatch<SetStateAction<string[]>>;
   districts: string[];
 }
 
-function SeoulMap({padding = 15, onDistrictHover,setDistricts,districts}:SeoulMapProps){
+function SeoulMap({padding = 15,setDistricts,districts}:SeoulMapProps){
   //DOM 객체에 직접 접근해야 하므로 useRef 사용
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -162,6 +161,18 @@ function SeoulMap({padding = 15, onDistrictHover,setDistricts,districts}:SeoulMa
       svg.selectAll("*").remove();
     };
   },[padding, setDistricts]);
+
+  // districts 변화에 따라 selected 클래스 동기화
+  useEffect(() => {
+    const svgDom = svgRef.current;
+    if (!svgDom) return;
+    const svg = d3.select(svgDom);
+    svg.selectAll<SVGPathElement, DistrictFeature>(".district-path")
+      .classed("selected", (d) => districts.includes(d.properties.SIG_KOR_NM));
+    svg.selectAll<SVGTextElement, DistrictFeature>(".district-label")
+      .classed("selected", (d) => districts.includes(d.properties.SIG_KOR_NM));
+  }, [districts]);
+
   return (
     <div className={styles.root}>
       <div ref={containerRef} className={styles.mapContainer}>
