@@ -7,30 +7,40 @@ import type {
   SeoulDistrictsGeoJSON
 } from "../../../types/district.types";
 
-export interface DistrictStepProps { // SeoulMap 컴포넌트의 prop 타입 정의
+
+// JSON 임포트를 명시적으로 타입 단언
+const geoData = seoulDistrictsRaw as unknown as SeoulDistrictsGeoJSON;
+
+//DistrictFeature에서 
+type DistrictFeature = SeoulDistrictsGeoJSON["features"][number];
+
+// 자치구 추가/제거 토글
+const max = 5; // 선택 가능한 자치구 최대 개수
+function toggleDistrict(prev: string[], name: string): string[] {
+  if (prev.some((d) => d === name)) return prev.filter((d) => d !== name);
+  if (prev.length >= max) return prev;
+  return [...prev, name];
+}
+
+export interface DistrictStepProps { // DistrictStep 컴포넌트의 prop 타입 정의
   districts: string[];
   setDistricts: Dispatch<SetStateAction<string[]>>
 }
 
 export default function DistrictStep({ districts, setDistricts }:DistrictStepProps) {
   console.log("현재 districts:"+districts);
-  const max = 5;
-  const toggle = (selectedName:string) => {
-    if (districts.some((d) => (d === selectedName))) {//districts배열에 d 중 하나라도 selectedName가 같은게 있으면
-      setDistricts(districts.filter((d) => (d !== selectedName)));//filter 조건에 맞는 새 배열
-    }
-    else if (districts.length < max){
-      setDistricts([...districts, selectedName]);//새로운 selectedName 추가
-    } 
-  };
+  const toggle = (selectedName:string) =>
+    setDistricts((prev) => toggleDistrict(prev, selectedName));
   return (
     <div className={"dp-card"}>
+      {/* 자치구 설문 설명 */}
       <div style={{ marginBottom: 18 }}>
         <h2 style={{ fontSize: 22, fontWeight: 700, color: "var(--dp-navy-900)" }}>관심 있는 구를 골라주세요</h2>
         <p style={{ marginTop: 6, fontSize: 13, color: "var(--fg-2)" }}>
           서울시 25개 자치구 중 <b style={{ color: "var(--primary)" }}>5개</b>를 선택하면 그 안에서 동을 추려드려요.
         </p>
       </div>
+      {/* 구 선택 라벨 바 */}
       <div className="dp-gu-bar">
         <div className="dp-gu-bar__count">
           <span>{districts.length}</span> / {max}
@@ -48,19 +58,15 @@ export default function DistrictStep({ districts, setDistricts }:DistrictStepPro
           <button className="dp-gu-clear" onClick={() => setDistricts([])}>전체 해제</button>
         )}
       </div>
+      {/* 서울 맵 컴포넌트 */}
       <SeoulMap padding={15} setDistricts={setDistricts} districts={districts}/>
+      {/* 지도 관련 멘트 바 */}
       <div style={{ marginTop: 14, padding: "10px 14px", background: "var(--bg-tint-info)", borderRadius: 8, fontSize: 12, color: "var(--dp-navy-700)" }}>
         ⓘ 서울 열린데이터광장의 자치구 경계 GeoJSON을 기반으로 한 실제 행정구역 지도예요.
       </div>
     </div>
   );
 }
-
-// JSON 임포트를 명시적으로 타입 단언
-const geoData = seoulDistrictsRaw as unknown as SeoulDistrictsGeoJSON;
-
-//DistrictFeature에서 
-type DistrictFeature = SeoulDistrictsGeoJSON["features"][number];
 
 export interface SeoulMapProps { // SeoulMap 컴포넌트의 prop 타입 정의
   padding?: number;
@@ -115,12 +121,7 @@ function SeoulMap({padding = 15,setDistricts,districts}:SeoulMapProps){
         svg.selectAll(".district-label").classed("highlighted", false);
       })
       .on("click",function(_event,district){
-        const name = district.properties.SIG_KOR_NM;
-        setDistricts(prev => {
-          if (prev.some(d => d === name)) return prev.filter(d => d !== name);
-          if (prev.length >= 5) return prev;
-          return [...prev, name];
-        });
+        setDistricts((prev) => toggleDistrict(prev, district.properties.SIG_KOR_NM));
       });
     
     //자치구 조각 위 이름표 정의
@@ -132,6 +133,7 @@ function SeoulMap({padding = 15,setDistricts,districts}:SeoulMapProps){
       .attr("id", (district) => "label-" + district.properties.SIG_CD)
       .text((district) => district.properties.SIG_KOR_NM);
 
+    //실제 지도를 그리는 로직
     const drawPathAndLabel = (width: number,height: number)=>{
       svg.attr("viewBox", `0 0 ${width} ${height}`);//각각 path의 크기를 크기에 맞춰 재설정
       projectionOption.fitExtent([[padding,padding],[width-padding,height-padding]],geoData);
@@ -143,8 +145,6 @@ function SeoulMap({padding = 15,setDistricts,districts}:SeoulMapProps){
       });
     }
 
-    drawPathAndLabel(containerDom.clientWidth, containerDom.clientHeight);
-    
     // ResizeObserver 로 컨테이너 크기 변화에 반응
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
@@ -154,11 +154,13 @@ function SeoulMap({padding = 15,setDistricts,districts}:SeoulMapProps){
     });
     observer.observe(containerDom);
 
+    // 수업때 배운 클린업 함수, 컴포넌트가 사라질때 실행, 메모리 누수 방지용으로 쓴다
     return () => {
       observer.disconnect();
       // 언마운트 시 D3가 붙인 요소 전부 삭제
       svg.selectAll("*").remove();
     };
+
   },[padding, setDistricts]);
 
   // districts 변화에 따라 selected 클래스 동기화
