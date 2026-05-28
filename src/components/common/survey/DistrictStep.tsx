@@ -14,6 +14,7 @@ export interface DistrictStepProps { // SeoulMap 컴포넌트의 prop 타입 정
 }
 
 export default function DistrictStep({ districts, setDistricts }:DistrictStepProps) {
+  console.log("현재 districts:"+districts);
   const max = 5;
   const toggle = (selectedName:string) => {
     if (districts.some((d) => (d === selectedName))) {//districts배열에 d 중 하나라도 selectedName가 같은게 있으면
@@ -31,7 +32,24 @@ export default function DistrictStep({ districts, setDistricts }:DistrictStepPro
           서울시 25개 자치구 중 <b style={{ color: "var(--primary)" }}>5개</b>를 선택하면 그 안에서 동을 추려드려요.
         </p>
       </div>
-      <SeoulMap padding={15} />
+      <div className="dp-gu-bar">
+        <div className="dp-gu-bar__count">
+          <span>{districts.length}</span> / {max}
+        </div>
+        <div className="dp-gu-bar__chips">
+          {districts.length === 0
+            ? <span className="dp-gu-bar__empty">지도에서 구를 골라주세요</span>
+            : districts.map(d => (
+                <span key={d} className="dp-gu-chip" onClick={() => toggle(d)}>
+                  {d}<span aria-hidden="true">×</span>
+                </span>
+              ))}
+        </div>
+        {districts.length > 0 && (
+          <button className="dp-gu-clear" onClick={() => setDistricts([])}>전체 해제</button>
+        )}
+      </div>
+      <SeoulMap padding={15} setDistricts={setDistricts} districts={districts}/>
       <div style={{ marginTop: 14, padding: "10px 14px", background: "var(--bg-tint-info)", borderRadius: 8, fontSize: 12, color: "var(--dp-navy-700)" }}>
         ⓘ 서울 열린데이터광장의 자치구 경계 GeoJSON을 기반으로 한 실제 행정구역 지도예요.
       </div>
@@ -48,9 +66,11 @@ type DistrictFeature = SeoulDistrictsGeoJSON["features"][number];
 export interface SeoulMapProps { // SeoulMap 컴포넌트의 prop 타입 정의
   padding?: number;
   onDistrictHover?: (props: SeoulDistrictProperties | null) => void;
+  setDistricts: Dispatch<SetStateAction<string[]>>;
+  districts: string[];
 }
 
-function SeoulMap({padding = 15, onDistrictHover}:SeoulMapProps){
+function SeoulMap({padding = 15, onDistrictHover,setDistricts,districts}:SeoulMapProps){
   //DOM 객체에 직접 접근해야 하므로 useRef 사용
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -84,19 +104,25 @@ function SeoulMap({padding = 15, onDistrictHover}:SeoulMapProps){
         //1. 전체 하이라이트 초기화
         svg.selectAll(".district-path").classed("highlighted", false);
         svg.selectAll(".district-label").classed("highlighted", false);
-        //2. 현재 자치구 조각 하이라이트
+        //2. 현재 자치구 조각 하이라이트 (raise 제거 — click 이벤트 방해 방지)
         d3.select(this)
-          .classed("highlighted", true)
-          .raise();
+          .classed("highlighted", true);
         //3. 현재 자치구 이름표 하이라이트
         svg
           .select("#label-" + district.properties.SIG_CD)// 마우스가 올라간 자치구 geojson 과 동일한 id의 라벨찾기
-          .classed("highlighted", true)
-          .raise();
+          .classed("highlighted", true);
       })
       .on("mouseleave", function () { // 마우스가 떠나면 전체 초기화
         svg.selectAll(".district-path").classed("highlighted", false);
         svg.selectAll(".district-label").classed("highlighted", false);
+      })
+      .on("click",function(_event,district){
+        const name = district.properties.SIG_KOR_NM;
+        setDistricts(prev => {
+          if (prev.some(d => d === name)) return prev.filter(d => d !== name);
+          if (prev.length >= 5) return prev;
+          return [...prev, name];
+        });
       });
     
     //자치구 조각 위 이름표 정의
@@ -135,7 +161,7 @@ function SeoulMap({padding = 15, onDistrictHover}:SeoulMapProps){
       // 언마운트 시 D3가 붙인 요소 전부 삭제
       svg.selectAll("*").remove();
     };
-  },[padding]);
+  },[padding, setDistricts]);
   return (
     <div className={styles.root}>
       <div ref={containerRef} className={styles.mapContainer}>
