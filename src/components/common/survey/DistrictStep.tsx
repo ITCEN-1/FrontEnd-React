@@ -4,8 +4,7 @@ import * as d3 from "d3";
 import styles from "./SeoulMap.module.css";
 import seoulDistrictsRaw from "../../../seoulDistricts.json";
 import type {
-  SeoulDistrictsGeoJSON,
-  SeoulDistrictProperties,
+  SeoulDistrictsGeoJSON
 } from "../../../types/district.types";
 
 export interface DistrictStepProps { // SeoulMap 컴포넌트의 prop 타입 정의
