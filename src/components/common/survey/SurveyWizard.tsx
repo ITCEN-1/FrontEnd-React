@@ -4,11 +4,13 @@ import InfraStep from "./InfraStep";
 import BudgetStep from "./BudgetStep";
 import CommuteStep from "./CommuteStep";
 import "../../../styles.css";
+import useSurveyRequestStore from "../../../store/request.store";
 
 function SurveyWizard(){
     const [surveyStep,setSurveyStep] = useState<number>(1);
     const [districts,setDistricts] = useState<string[]>([])
     const canAdvanceDistrictStep = districts.length>0;
+    const {request, setRequest, clearRequest} = useSurveyRequestStore();
 
     const prev=()=>{
       if (surveyStep > 1) setSurveyStep(surveyStep - 1);

@@ -3,6 +3,21 @@ export type HistoryDTO = {
   rankings: Array<Ranking>;
 };
 
+export type SurveyRequest = {
+  workPlaceAddress: string | null;
+  jeonseMin: number | null;
+  jeonseMax: number | null;
+  monthlyMin: number | null;
+  monthlyMax: number | null;
+  depositMin: number | null;
+  depositMax: number | null;
+  preferenceLargeStore: "LOW" | "MIDDLE" | "HIGH";
+  preferenceHospital: "LOW" | "MIDDLE" | "HIGH";
+  preferenceSubway: "LOW" | "MIDDLE" | "HIGH";
+  preferenceLibrary: "LOW" | "MIDDLE" | "HIGH";
+  surveySelectedDistrictList: Array<District>;
+}
+
 export type SurveyDto = {
   surveyId: number;
   workPlaceAddress: string | null;
