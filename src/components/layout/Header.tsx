@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
-interface HeaderState {
-  type: "DASHBOARD" | "HISTORY" | "BOARD";
-}
+import type { HeaderState } from "../../store/common.store";
+import { useHeaderStore } from "../../store/common.store";
 
 function Header() {
-  const [selected, setSelected] = useState<HeaderState>({ type: "DASHBOARD" });
+  const { state, setState } = useHeaderStore();
 
   return (
     <header
@@ -21,23 +19,23 @@ function Header() {
         {/*아래 button들은 나중에 Link로 Routing수행해야 함*/}
         <Link to="/">
           <button
-            className={`text-[14px] px-2 py-3.5 rounded-xl font-semibold cursor-pointer ${selectedStyle(selected, "DASHBOARD")}`}
-            onClick={() => setSelected({ type: "DASHBOARD" })}
+            className={`text-[14px] px-2 py-3.5 rounded-xl font-semibold cursor-pointer ${selectedStyle(state, "DASHBOARD")}`}
+            onClick={() => setState({ type: "DASHBOARD" })}
           >
             대시보드
           </button>
         </Link>
         <Link to="/history">
           <button
-            className={`text-[14px] px-2 py-3.5 rounded-xl font-semibold cursor-pointer ${selectedStyle(selected, "HISTORY")}`}
-            onClick={() => setSelected({ type: "HISTORY" })}
+            className={`text-[14px] px-2 py-3.5 rounded-xl font-semibold cursor-pointer ${selectedStyle(state, "HISTORY")}`}
+            onClick={() => setState({ type: "HISTORY" })}
           >
             히스토리
           </button>
         </Link>
         <button
-          className={`text-[14px] px-2 py-3.5 rounded-xl font-semibold cursor-pointer ${selectedStyle(selected, "BOARD")}`}
-          onClick={() => setSelected({ type: "BOARD" })}
+          className={`text-[14px] px-2 py-3.5 rounded-xl font-semibold cursor-pointer ${selectedStyle(state, "BOARD")}`}
+          onClick={() => setState({ type: "BOARD" })}
         >
           게시판
         </button>

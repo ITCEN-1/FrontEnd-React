@@ -3,6 +3,9 @@ import { Icon } from "../common/primitives.jsx";
 import type { HistoryDTO } from "../../types/dashboard.types.js";
 import { isWolse } from "../../utils/survey.util.js";
 import { parsePriceToOutput } from "../../utils/price.util.js";
+import { useNavigate } from "react-router-dom";
+import { useDashboardStore } from "../../store/dashboard.store.js";
+import { useHeaderStore } from "../../store/common.store.js";
 
 const LEVEL_TO_STRING = {
   HIGH: "상",
@@ -12,6 +15,15 @@ const LEVEL_TO_STRING = {
 
 function HistoryCard({ data, isFirst }: { data: HistoryDTO; isFirst: boolean }) {
   const { surveyDto, rankings } = data;
+  const navigation = useNavigate();
+  const { setData } = useDashboardStore();
+  const { setState } = useHeaderStore();
+
+  const handleMoreResult = () => {
+    setData(data);
+    setState({ type: "DASHBOARD" });
+    navigation("/");
+  };
 
   return (
     <div className={"bg-white rounded-(--r-lg) p-5 shadow-[var(--shadow-sm)]"}>
@@ -62,6 +74,7 @@ function HistoryCard({ data, isFirst }: { data: HistoryDTO; isFirst: boolean }) 
         </div>
         <button
           className={`${buttonStyle} bg-white text-[var(--fg-1)] border-[var(--border-2)] shadow-[0_1px_2px_rgba(0,0,0,0.04)]`}
+          onClick={() => handleMoreResult()}
         >
           결과 다시 보기 →
         </button>
