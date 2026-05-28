@@ -2,6 +2,7 @@ const ONE_HUNDRED_MILLION = 10000;
 
 // price로 들어오는 숫자의 단위는 만원입니다.
 export function parsePriceToOutput(price: number) {
+  if (price === 0) return "0만원";
   const oneHundredMillion = Math.floor(price / ONE_HUNDRED_MILLION);
   const tenMillion = Math.floor(price % ONE_HUNDRED_MILLION);
   let output = "";
