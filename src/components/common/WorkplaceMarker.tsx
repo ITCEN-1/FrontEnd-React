@@ -3,9 +3,11 @@ import { CustomOverlayMap } from "react-kakao-maps-sdk";
 import { getLatLngFromKeyword } from "../../services/dashboard.api";
 //@ts-ignore
 import { Icon } from "../common/primitives.jsx";
+import { useFocusStore } from "../../store/mapfocus.store.js";
 
 function WorkplaceMarker({ workPlaceAddress }: { workPlaceAddress: string }) {
-  const [position, setPosition] = useState<{ lat: number; lng: number } | null>(null);
+  const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const { position, setFocusPosition } = useFocusStore();
 
   useEffect(() => {
     const fetchCoordinates = async () => {
@@ -13,7 +15,7 @@ function WorkplaceMarker({ workPlaceAddress }: { workPlaceAddress: string }) {
         if (!workPlaceAddress) return;
 
         const coords = await getLatLngFromKeyword(workPlaceAddress);
-        setPosition(coords);
+        setLocation(coords);
       } catch (error) {
         console.error("주소 변환 실패:", error);
       }
@@ -21,13 +23,23 @@ function WorkplaceMarker({ workPlaceAddress }: { workPlaceAddress: string }) {
     fetchCoordinates();
   }, []);
 
-  if (!position) {
+  if (!location) {
     return;
   }
 
   return (
-    <CustomOverlayMap position={position} yAnchor={1}>
-      <div className="relative flex items-center justify-center w-10 h-12.5 cursor-pointer">
+    <CustomOverlayMap position={location} yAnchor={1}>
+      <div
+        className="relative flex items-center justify-center w-10 h-12.5 cursor-pointer"
+        onClick={() => {
+          setFocusPosition({
+            latitude: location.lat,
+            longitude: location.lng,
+            dongCode: null,
+            level: 4,
+          });
+        }}
+      >
         <img src="/workplace-pin.svg" alt="workplace" className="absolute top-0 left-0 w-full h-full" />
         <Icon
           name={"briefcase"}

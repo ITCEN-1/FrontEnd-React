@@ -39,7 +39,7 @@ export async function getInfraDatas(dongCode: number, infraType: InfraType) {
   return response.data;
 }
 
-export async function getInfraCntDatas(dongCode: number, surveyId: number) {
+export async function getInfraCntDatas(dongCode: number | null, surveyId: number) {
   const response = await axios.get(
     `${import.meta.env.VITE_SERVER_URL}/api/dashboard/dongsTest/${dongCode}?surveyId=${surveyId}`,
   );
