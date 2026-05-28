@@ -5,18 +5,45 @@ import BudgetStep from "./BudgetStep";
 import CommuteStep from "./CommuteStep";
 import "../../../styles.css";
 import useSurveyRequestStore from "../../../store/request.store";
+import type { PreferenceLevel } from "../../../types/dashboard.types";
 
 function SurveyWizard(){
     const [surveyStep,setSurveyStep] = useState<number>(1);
     const [districts,setDistricts] = useState<string[]>([])
+    const [preferenceLargeStore,setPreferenceLargeStore] = useState<PreferenceLevel>("LOW");
+    const [preferenceHospital,setPreferenceHospital] = useState<PreferenceLevel>("LOW");
+    const [preferenceSubway,setPreferenceSubway] = useState<PreferenceLevel>("LOW");
+    const [preferenceLibrary,setPreferenceLibrary] = useState<PreferenceLevel>("LOW");
+
     const canAdvanceDistrictStep = districts.length>0;
-    const {request, setRequest, clearRequest} = useSurveyRequestStore();
+    const { setRequest } = useSurveyRequestStore();
 
     const prev=()=>{
       if (surveyStep > 1) setSurveyStep(surveyStep - 1);
     };
     const next=()=>{
       if (!canAdvanceDistrictStep) return;
+
+      if(surveyStep===1){
+        //자치구 설문 업데이트
+        setRequest({ surveySelectedDistrictList: districts });
+      }
+      if(surveyStep===2){
+        //선호 인프라 설문 업데이트
+        setRequest({
+          preferenceLargeStore: preferenceLargeStore,
+          preferenceHospital: preferenceHospital,
+          preferenceSubway: preferenceSubway,
+          preferenceLibrary: preferenceLibrary
+        })
+      }
+      if(surveyStep===3){
+        //전월세 설문 업데이트
+      }
+      if(surveyStep===4){
+        //거주지 정보 설문 업데이트 + 설문 저장 api 요청
+      }
+
       if (surveyStep < 4) setSurveyStep(surveyStep + 1);
     };
 
