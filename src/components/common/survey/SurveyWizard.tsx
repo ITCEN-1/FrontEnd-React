@@ -7,17 +7,15 @@ import "../../../styles.css";
 
 function SurveyWizard(){
     const [surveyStep,setSurveyStep] = useState<number>(1);
+    const [districts,setDistricts] = useState<string[]>([])
 
     return(
         <div className={"dp-onboard-wrap" + (surveyStep === 1 ? " dp-onboard-wrap--wide" : "")}>
             <SurveyProgressBar step={surveyStep}></SurveyProgressBar>
-            {surveyStep===1 && <DistrictStep />}
+            {surveyStep===1 && <DistrictStep districts={districts} setDistricts={setDistricts}/>}
             {surveyStep===2 && <InfraStep />}
             {surveyStep===3 && <BudgetStep />}
             {surveyStep===4 && <CommuteStep />}
-            <p><button onClick={()=>setSurveyStep(1)}>1</button></p>
-            <p><button onClick={()=>setSurveyStep(2)}>2</button></p>
-            <p><button onClick={()=>setSurveyStep(3)}>3</button></p>
         </div>
     );
 }
