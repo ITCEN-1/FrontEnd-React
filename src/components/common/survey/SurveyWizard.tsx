@@ -8,6 +8,15 @@ import "../../../styles.css";
 function SurveyWizard(){
     const [surveyStep,setSurveyStep] = useState<number>(1);
     const [districts,setDistricts] = useState<string[]>([])
+    const canAdvanceDistrictStep = districts.length>0;
+
+    const prev=()=>{
+      if (surveyStep > 1) setSurveyStep(surveyStep - 1);
+    };
+    const next=()=>{
+      if (!canAdvanceDistrictStep) return;
+      if (surveyStep < 4) setSurveyStep(surveyStep + 1);
+    };
 
     return(
         <div className={"dp-onboard-wrap" + (surveyStep === 1 ? " dp-onboard-wrap--wide" : "")}>
@@ -16,6 +25,12 @@ function SurveyWizard(){
             {surveyStep===2 && <InfraStep />}
             {surveyStep===3 && <BudgetStep />}
             {surveyStep===4 && <CommuteStep />}
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 32 }}>
+          <button className={"dp-btn"} onClick={prev}>{surveyStep === 1 ? "← 첫 화면" : "← 이전"}</button>
+          <button className={"dp-btn dp-btn--primary"} onClick={next} disabled={!canAdvanceDistrictStep}>
+            {surveyStep < 4 ? "다음 단계 →" : "추천 받기"}
+          </button>
+        </div>
         </div>
     );
 }
