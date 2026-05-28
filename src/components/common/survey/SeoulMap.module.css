@@ -1,0 +1,88 @@
+/* 동네픽 (Dongne-Pick) coral palette */
+.root {
+  --dp-coral-50: #fff1ed;
+  --dp-coral-100: #ffd9cc;
+  --dp-coral-200: #ffb39b;
+  --dp-coral-300: #ff8d6a;
+  --dp-coral-400: #ff7a55;
+  --dp-coral-500: #ff6b4a; /* PRIMARY — 동네 Coral */
+  --dp-coral-600: #e5532f;
+  --dp-coral-700: #b53a1c;
+
+  --bg: #fff6f2; /* warm page background */
+  --surface: #ffffff; /* card / land fill */
+  --border: var(--dp-coral-100);
+  --accent: var(--dp-coral-500);
+  --text: #262626;
+  --muted: #8c8c8c;
+
+  position: relative;
+  width: 100%;
+  height: 460px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Noto Sans KR", sans-serif;
+  overflow: hidden;
+}
+
+.mapContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: radial-gradient(
+    120% 120% at 50% 0%,
+    var(--dp-coral-50) 0%,
+    var(--bg) 60%
+  );
+}
+
+.mapContainer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      rgba(255, 107, 74, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(255, 107, 74, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+}
+
+/* d3 가 동적으로 붙이는 요소이므로 :global 로 선택 */
+.map :global(.district-path) {
+  fill: #ffffff;
+  stroke: var(--dp-coral-200);
+  stroke-width: 0.8;
+  cursor: pointer;
+  transition: fill 0.18s ease, stroke 0.18s ease, filter 0.18s ease;
+}
+
+.map :global(.district-path.highlighted) {
+  fill: var(--dp-coral-100);
+  stroke: var(--dp-coral-500);
+  stroke-width: 2;
+  filter: drop-shadow(0 4px 12px rgba(255, 107, 74, 0.4));
+}
+
+.map :global(.district-label) {
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 9.5px;
+  font-weight: 700;
+  fill: rgba(181, 58, 28, 0.7);
+  pointer-events: none;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  letter-spacing: 0.3px;
+  transition: fill 0.18s, font-size 0.18s;
+}
+
+.map :global(.district-label.highlighted) {
+  fill: var(--dp-coral-600);
+  font-size: 11px;
+}
