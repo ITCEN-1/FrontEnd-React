@@ -4,19 +4,23 @@ export type HistoryDTO = {
 };
 
 export type SurveyRequest = {
-  workPlaceAddress: string | null;
-  jeonseMin: number | null;
-  jeonseMax: number | null;
-  monthlyMin: number | null;
-  monthlyMax: number | null;
-  depositMin: number | null;
-  depositMax: number | null;
+  workPlaceAddress: string;
+  jeonseMin: number;
+  jeonseMax: number;
+  monthlyMin: number;
+  monthlyMax: number;
+  depositMin: number;
+  depositMax: number;
   preferenceLargeStore: "LOW" | "MIDDLE" | "HIGH";
   preferenceHospital: "LOW" | "MIDDLE" | "HIGH";
   preferenceSubway: "LOW" | "MIDDLE" | "HIGH";
   preferenceLibrary: "LOW" | "MIDDLE" | "HIGH";
-  surveySelectedDistrictList: Array<District>;
+  surveySelectedDistrictList: string[];
 }
+
+export type PreferenceLevel = "LOW" | "MIDDLE" | "HIGH";
+
+export type PartialSurveyRequest = Partial<SurveyRequest>
 
 export type SurveyDto = {
   surveyId: number;

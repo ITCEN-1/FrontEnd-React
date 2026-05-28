@@ -2,17 +2,16 @@ import {create} from 'zustand';
 import type {SurveyRequest} from "../types/dashboard.types";
 
 interface SurveyRequestStore {
-    request: SurveyRequest | null,
-    setRequest: (request: SurveyRequest) => void,
-    clearRequest: () => void
+    request: Partial<SurveyRequest>;
+    setRequest: (request: Partial<SurveyRequest>) => void;
+    clearRequest: () => void;
 }
 
 const useSurveyRequestStore = create<SurveyRequestStore>((set) => ({
-    request: null, // 초기 상태
-    setRequest: (request: SurveyRequest) => {
-        set({request});
-    },
-    clearRequest: () => set({request: null})
+    request: {}, // 빈 객체로 시작
+    setRequest: (request) =>
+        set((state) => ({ request: { ...state.request, ...request } })),
+    clearRequest: () => set({ request: {} }),
 }));
 
 export default useSurveyRequestStore;
