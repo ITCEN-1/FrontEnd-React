@@ -1,13 +1,13 @@
 //@ts-ignore
 import { Icon } from "./primitives.jsx";
-import type { InfraType, Ranking } from "../../types/dashboard.types.js";
+import type { InfraType, Ranking, DongDetailInfo } from "../../types/dashboard.types.js";
 import { useFocusStore, useHoverDongStore } from "../../store/mapfocus.store.js";
-import { useDashboardStore } from "../../store/dashboard.store.js";
+import { useDashboardStore, useInfraLocationStore } from "../../store/dashboard.store.js";
 import { parseMinuteToHourTime } from "../../utils/time.util.js";
 import { parsePriceToOutput } from "../../utils/price.util.js";
 import { isWolse } from "../../utils/survey.util.js";
-// API연동 전 dummy데이터
-import { dummyDongDetail } from "../../store/store.dummy.js";
+import { getInfraDatas, getInfraCntDatas } from "../../services/dashboard.api.js";
+import { useEffect, useState } from "react";
 
 const infra = {
   SUBWAY: {
@@ -32,9 +32,23 @@ function LegalDetailInfos() {
   const { position, clearFocusPosition } = useFocusStore();
   const { clearHoverDongCode } = useHoverDongStore();
   const { data } = useDashboardStore();
+  const { clearInfraLocations } = useInfraLocationStore();
   const survey = data?.surveyDto;
   const wolse = survey ? isWolse(survey) : false;
   const dongInfo: Ranking = data?.rankings.find((ranking) => ranking.dongCode === position?.dongCode)!;
+  const [infraDetail, setInfraDetail] = useState<DongDetailInfo>();
+
+  useEffect(() => {
+    const fetchDongInfraCnt = async () => {
+      const response = getInfraCntDatas(position!.dongCode, data?.surveyDto.surveyId!);
+
+      return response;
+    };
+
+    fetchDongInfraCnt().then((response) => {
+      setInfraDetail(response.content);
+    });
+  }, []);
 
   return (
     <div className={"flex flex-col"}>
@@ -45,6 +59,7 @@ function LegalDetailInfos() {
         onClick={() => {
           clearFocusPosition();
           clearHoverDongCode();
+          clearInfraLocations();
         }}
       >
         <span className={"text-[16px]"}>←</span>
@@ -63,7 +78,7 @@ function LegalDetailInfos() {
         </h2>
         <p className={"text-[13px] text-(--fg-2)>"}>
           직장까지 약 <b>{parseMinuteToHourTime(dongInfo.commuteTime)}</b> · 매물{" "}
-          <b>{wolse ? dummyDongDetail.wolseCount : dummyDongDetail.jeonseCount}건</b>
+          <b>{wolse ? infraDetail?.wolseCount : infraDetail?.jeonseCount}건</b>
         </p>
       </div>
       <div className={"pt-4 pb-8 px-5 flex flex-col gap-5.5"}>
@@ -71,10 +86,30 @@ function LegalDetailInfos() {
         <section>
           <h3 className={"text-[14px] font-semibold text-(--fg-1) mb-2.5"}>주변 인프라</h3>
           <div className={"grid grid-cols-2 gap-2"}>
-            <InfraIcon infraType={"SUBWAY"} number={dummyDongDetail.subwayCount ?? 0} color={"blue"} />
-            <InfraIcon infraType={"HOSPITAL"} number={dummyDongDetail.hospitalCount ?? 0} color={"red"} />
-            <InfraIcon infraType={"LIBRARY"} number={dummyDongDetail.libraryCount ?? 0} color={"green"} />
-            <InfraIcon infraType={"LARGE_STORE"} number={dummyDongDetail.largeStoreCount ?? 0} color={"orange"} />
+            <InfraIcon
+              infraType={"SUBWAY"}
+              number={infraDetail?.subwayCount ?? 0}
+              color={"blue"}
+              dongCode={position!.dongCode}
+            />
+            <InfraIcon
+              infraType={"HOSPITAL"}
+              number={infraDetail?.hospitalCount ?? 0}
+              color={"red"}
+              dongCode={position!.dongCode}
+            />
+            <InfraIcon
+              infraType={"LIBRARY"}
+              number={infraDetail?.libraryCount ?? 0}
+              color={"green"}
+              dongCode={position!.dongCode}
+            />
+            <InfraIcon
+              infraType={"LARGE_STORE"}
+              number={infraDetail?.largeStoreCount ?? 0}
+              color={"orange"}
+              dongCode={position!.dongCode}
+            />
           </div>
           <p className={"text-[11.5px] text-(--fg-3) mt-2"}>각 항목을 클릭하면 지도에 위치가 표시돼요.</p>
         </section>
@@ -88,7 +123,7 @@ function LegalDetailInfos() {
               depositMax={wolse ? (survey?.depositMax ?? -1) : (survey?.jeonseMax ?? -1)}
               monthlyMin={wolse ? (survey?.monthlyMin ?? -1) : undefined}
               monthlyMax={wolse ? (survey?.monthlyMax ?? -1) : undefined}
-              number={wolse ? (dummyDongDetail.wolseCount ?? 0) : (dummyDongDetail.jeonseCount ?? 0)}
+              number={wolse ? (infraDetail?.wolseCount ?? 0) : (infraDetail?.jeonseCount ?? 0)}
             />
           </div>
         </section>
@@ -123,12 +158,39 @@ function LegalDetailInfos() {
   );
 }
 
-function InfraIcon({ infraType, number, color }: { infraType: InfraType; number: number; color: string }) {
+function InfraIcon({
+  infraType,
+  dongCode,
+  number,
+  color,
+}: {
+  infraType: InfraType;
+  dongCode: number;
+  number: number;
+  color: string;
+}) {
+  const { setInfraLocations } = useInfraLocationStore();
+
+  const handleInfraClick = () => {
+    async function fetchInfraDatas() {
+      const response = await getInfraDatas(dongCode, infraType);
+
+      return response;
+    }
+
+    fetchInfraDatas()
+      .then((response) => response.content)
+      .then((content) => {
+        setInfraLocations(content);
+      });
+  };
+
   return (
     <div
       className={
         "flex items-center gap-2.5 py-2.5 px-3 bg-(--dp-gray-50) rounded-(--r-lg) cursor-pointer transition-all duration-[120ms] ease-out hover:bg-(--dp-coral-50)"
       }
+      onClick={() => handleInfraClick()}
     >
       <span className={"w-8 h-8 rounded-lg bg-white flex items-center justify-center shrink-0"}>
         <Icon name={infra[infraType].svgName} size={18} style={{ color }} />
@@ -167,7 +229,7 @@ function HousePriceInfo({
         <span className={"text-[11px] text-(--fg-3) mt-0.5"}>
           보증금 {parsePriceToOutput(depositMin)}~{parsePriceToOutput(depositMax)} /
         </span>
-        {monthlyMin && monthlyMax && (
+        {monthlyMin != null && monthlyMax != null && (
           <span className={"text-[11px] text-(--fg-3) mt-0.5"}>
             월세금 {parsePriceToOutput(monthlyMin)}~{parsePriceToOutput(monthlyMax)}
           </span>

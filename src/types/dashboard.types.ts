@@ -54,3 +54,17 @@ export type DongDetailInfo = {
   jeonseCount: number | null;
   wolseCount: number | null;
 };
+
+export type InfraItemResponse = {
+  id: number;
+  name: string;
+  latitude: number;
+  longitude: number;
+  line: string;
+};
+
+export type InfraDetailResponse = {
+  dongCode: number;
+  type: InfraType;
+  items: Array<InfraItemResponse>;
+};

@@ -41,7 +41,6 @@ function HistoryPage() {
       <div className={"flex flex-col gap-3"}>
         {histories &&
           histories.map((history, idx) => {
-            console.log(history);
             return <HistoryCard key={history.surveyDto.surveyId} data={history} isFirst={idx === 0} />;
           })}
       </div>
