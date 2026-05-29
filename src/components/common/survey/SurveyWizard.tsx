@@ -16,34 +16,18 @@ function SurveyWizard(){
     const [preferenceLibrary,setPreferenceLibrary] = useState<PreferenceLevel>("LOW");
 
     const canAdvanceDistrictStep = districts.length>0;
-    const { setRequest } = useSurveyRequestStore();
+    const { request,setRequest } = useSurveyRequestStore();
 
     const prev=()=>{
       if (surveyStep > 1) setSurveyStep(surveyStep - 1);
     };
     const next=()=>{
       if (!canAdvanceDistrictStep) return;
-
-      if(surveyStep===1){
-        //자치구 설문 업데이트
-        setRequest({ surveySelectedDistrictList: districts });
-      }
-      if(surveyStep===2){
-        //선호 인프라 설문 업데이트
-        setRequest({
-          preferenceLargeStore: preferenceLargeStore,
-          preferenceHospital: preferenceHospital,
-          preferenceSubway: preferenceSubway,
-          preferenceLibrary: preferenceLibrary
-        })
-      }
-      if(surveyStep===3){
-        //전월세 설문 업데이트
-      }
       if(surveyStep===4){
-        //거주지 정보 설문 업데이트 + 설문 저장 api 요청
-      }
+        //지금까지 state로 설문 저장 api 요청
 
+
+      }
       if (surveyStep < 4) setSurveyStep(surveyStep + 1);
     };
 
@@ -51,7 +35,7 @@ function SurveyWizard(){
         <div className={"dp-onboard-wrap" + (surveyStep === 1 ? " dp-onboard-wrap--wide" : "")}>
             <SurveyProgressBar step={surveyStep}></SurveyProgressBar>
             {surveyStep===1 && <DistrictStep districts={districts} setDistricts={setDistricts}/>}
-            {surveyStep===2 && <InfraStep />}
+            {surveyStep===2 && <InfraStep infraProps={{preferenceLargeStore,setPreferenceLargeStore,preferenceHospital,setPreferenceHospital,preferenceSubway,setPreferenceSubway,preferenceLibrary,setPreferenceLibrary}}/>}
             {surveyStep===3 && <BudgetStep />}
             {surveyStep===4 && <CommuteStep />}
         <div style={{ display: "flex", justifyContent: "space-between", marginTop: 32 }}>
