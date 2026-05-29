@@ -15,7 +15,10 @@ function Header() {
         <img src={"/images/header-logo.png"} className={"h-9"} />
       </a>
       <div className={"flex gap-1 items-center flex-1"}>
-        <NavLink to="/" className={({ isActive }) => `${baseStyle} ${isActive ? selectedStyle : defaultStyle}`}>
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) => `${baseStyle} ${isActive ? selectedStyle : defaultStyle}`}
+        >
           <button>대시보드</button>
         </NavLink>
         <NavLink to="/history" className={({ isActive }) => `${baseStyle} ${isActive ? selectedStyle : defaultStyle}`}>
