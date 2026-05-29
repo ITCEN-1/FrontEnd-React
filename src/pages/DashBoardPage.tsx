@@ -78,12 +78,12 @@ const DashBoardPage = () => {
                       fillColor={isHovered ? "#ff6b4a" : "#fff1ed"}
                       fillOpacity={0.2}
                       onMouseover={() => {
-                        if (!position!.dongCode) {
+                        if (ranking.dongCode) {
                           setHoverDongCode(ranking.dongCode);
                         }
                       }}
                       onMouseout={() => {
-                        if (!position!.dongCode) {
+                        if (ranking.dongCode) {
                           clearHoverDongCode();
                         }
                       }}
