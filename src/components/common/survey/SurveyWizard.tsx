@@ -14,6 +14,9 @@ function SurveyWizard(){
     const [preferenceHospital,setPreferenceHospital] = useState<PreferenceLevel>("LOW");
     const [preferenceSubway,setPreferenceSubway] = useState<PreferenceLevel>("LOW");
     const [preferenceLibrary,setPreferenceLibrary] = useState<PreferenceLevel>("LOW");
+    const [jeonse, setJeonse] = useState<number[]>([0, 100000]);          // 만원 단위, 0~100000 (10억)
+    const [wolseDep, setWolseDep] = useState<number[]>([0, 20000]);        // 보증금, 0~20000 (2억)
+    const [wolseMon, setWolseMon] = useState<number[]>([0, 150]);             // 월세, 0~150
 
     const canAdvanceDistrictStep = districts.length>0;
     const { request,setRequest } = useSurveyRequestStore();
@@ -36,7 +39,7 @@ function SurveyWizard(){
             <SurveyProgressBar step={surveyStep}></SurveyProgressBar>
             {surveyStep===1 && <DistrictStep districts={districts} setDistricts={setDistricts}/>}
             {surveyStep===2 && <InfraStep infraProps={{preferenceLargeStore,setPreferenceLargeStore,preferenceHospital,setPreferenceHospital,preferenceSubway,setPreferenceSubway,preferenceLibrary,setPreferenceLibrary}}/>}
-            {surveyStep===3 && <BudgetStep />}
+            {surveyStep===3 && <BudgetStep budgetProps={{jeonse,setJeonse,wolseDep,setWolseDep,wolseMon,setWolseMon}}/>}
             {surveyStep===4 && <CommuteStep />}
         <div style={{ display: "flex", justifyContent: "space-between", marginTop: 32 }}>
           <button className={"dp-btn"} onClick={prev}>{surveyStep === 1 ? "← 첫 화면" : "← 이전"}</button>
