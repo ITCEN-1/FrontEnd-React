@@ -16,3 +16,7 @@ export function findLegalDongCoordinates(legal_dong_code: number | string) {
 
   return result;
 }
+
+export function isNumericString(value: string) {
+  return typeof value === "string" && value.trim() !== "" && !Number.isNaN(Number(value));
+}

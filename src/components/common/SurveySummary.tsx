@@ -4,6 +4,7 @@ import { useDashboardStore } from "../../store/dashboard.store.js";
 import { parsePriceToOutput } from "../../utils/price.util.js";
 import { PREFERENCE_LEVEL } from "../../utils/constants.js";
 import { isWolse } from "../../utils/survey.util.js";
+import type { District } from "../../types/dashboard.types.js";
 
 function SurveySummary() {
   const { data } = useDashboardStore();
@@ -103,6 +104,18 @@ function SurveySummary() {
                 <div className={"text-[12px] text-(--fg-2) mt-1"}>월세금 범위</div>
               </>
             )}
+          </div>
+          {/* 선호 구 표기 영역 */}
+          <div className={"border border-solid border-(--border-1) bg-white p-5 rounded-(--r-lg) w-full"}>
+            <h4 className={"text-[13px] font-bold text-(--dp-navy-900) mb-3"}>선호 구</h4>
+            <div className={"flex flex-col gap-2"}>
+              {survey.surveySelectedDistrictList.map((district: District) => (
+                <div className={"flex gap-1 items-center"}>
+                  <img src="/logo.svg" className={"w-4 h-4"} />
+                  <span className={"text-[13px] font-semibold text-(--primary)"}>{district.districtName}</span>
+                </div>
+              ))}
+            </div>
           </div>
           {/* 직장 위치 영역 */}
           {survey && (

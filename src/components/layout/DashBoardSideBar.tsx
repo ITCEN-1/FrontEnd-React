@@ -10,7 +10,7 @@ function DashBoardSideBar() {
 
   return (
     <aside className={"overflow-y-auto"}>
-      {position ? (
+      {position?.dongCode ? (
         <LegalDetailInfos />
       ) : (
         <>
