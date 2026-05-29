@@ -1,4 +1,5 @@
 import axios from "axios";
+import type { InfraType } from "../types/dashboard.types";
 
 export async function getSurveyAndRecommendedDong(userId: number) {
   const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/history/${userId}`);
@@ -29,3 +30,19 @@ export const getLatLngFromKeyword = (keyword: string): Promise<{ lat: number; ln
     });
   });
 };
+
+export async function getInfraDatas(dongCode: number, infraType: InfraType) {
+  const response = await axios.get(
+    `${import.meta.env.VITE_SERVER_URL}/api/dashboard/dongs/${dongCode}/elements?type=${infraType}`,
+  );
+
+  return response.data;
+}
+
+export async function getInfraCntDatas(dongCode: number | null, surveyId: number) {
+  const response = await axios.get(
+    `${import.meta.env.VITE_SERVER_URL}/api/dashboard/dongsTest/${dongCode}?surveyId=${surveyId}`,
+  );
+
+  return response.data;
+}

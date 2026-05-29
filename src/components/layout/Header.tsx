@@ -1,10 +1,9 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import type { HeaderState } from "../../store/common.store";
-import { useHeaderStore } from "../../store/common.store";
+import { NavLink, useParams } from "react-router-dom";
 
 function Header() {
-  const { state, setState } = useHeaderStore();
+  const baseStyle = `text-[14px] px-2 py-3.5 rounded-xl font-semibold cursor-pointer`;
+  const selectedStyle = `text-(--primary) bg-(--dp-coral-50)  hover:bg-(--dp-coral-100)`;
+  const defaultStyle = `text-(--fg-2) hover:bg-(--dp-coral-50)`;
 
   return (
     <header
@@ -16,29 +15,13 @@ function Header() {
         <img src={"/images/header-logo.png"} className={"h-9"} />
       </a>
       <div className={"flex gap-1 items-center flex-1"}>
-        {/*아래 button들은 나중에 Link로 Routing수행해야 함*/}
-        <Link to="/">
-          <button
-            className={`text-[14px] px-2 py-3.5 rounded-xl font-semibold cursor-pointer ${selectedStyle(state, "DASHBOARD")}`}
-            onClick={() => setState({ type: "DASHBOARD" })}
-          >
-            대시보드
-          </button>
-        </Link>
-        <Link to="/history">
-          <button
-            className={`text-[14px] px-2 py-3.5 rounded-xl font-semibold cursor-pointer ${selectedStyle(state, "HISTORY")}`}
-            onClick={() => setState({ type: "HISTORY" })}
-          >
-            히스토리
-          </button>
-        </Link>
-        <button
-          className={`text-[14px] px-2 py-3.5 rounded-xl font-semibold cursor-pointer ${selectedStyle(state, "BOARD")}`}
-          onClick={() => setState({ type: "BOARD" })}
-        >
-          게시판
-        </button>
+        <NavLink to="/" className={({ isActive }) => `${baseStyle} ${isActive ? selectedStyle : defaultStyle}`}>
+          <button>대시보드</button>
+        </NavLink>
+        <NavLink to="/history" className={({ isActive }) => `${baseStyle} ${isActive ? selectedStyle : defaultStyle}`}>
+          <button>히스토리</button>
+        </NavLink>
+        <button className={`${baseStyle} ${defaultStyle}`}>게시판</button>
       </div>
       <div className={"flex gap-3 items-center"}>
         <a
@@ -59,11 +42,6 @@ function Header() {
       </div>
     </header>
   );
-}
-
-function selectedStyle(selected: HeaderState, current: string) {
-  if (selected.type === current) return "text-(--primary) bg-(--dp-coral-50)  hover:bg-(--dp-coral-100)";
-  else return "text-(--fg-2) hover:bg-(--dp-coral-50)";
 }
 
 export default Header;
