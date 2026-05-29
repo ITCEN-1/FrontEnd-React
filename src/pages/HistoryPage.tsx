@@ -1,32 +1,10 @@
 //@ts-ignore
 import { Icon } from "../components/common/primitives.jsx";
-import HistoryCard from "../components/common/HistoryCard.js";
-import { getHistories } from "../services/history.api.js";
-import { useEffect, useState } from "react";
-import type { HistoryDTO } from "../types/dashboard.types.js";
+import { Suspense } from "react";
+import Loading from "../components/common/Loading.js";
+import HistoryList from "../components/common/HistoryList.js";
 
 function HistoryPage() {
-  const [histories, setHistories] = useState<HistoryDTO[]>();
-
-  useEffect(() => {
-    async function fetchHistories() {
-      try {
-        const response = await getHistories();
-
-        return response;
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
-    }
-
-    fetchHistories()
-      .then((response) => response.data.content)
-      .then((contents) => {
-        setHistories(contents);
-      });
-  }, []);
-
   return (
     <div className="p-8">
       <header className="flex justify-between items-end mb-6">
@@ -38,12 +16,9 @@ function HistoryPage() {
           <Icon name={"plus"} /> 새 설문 시작
         </button>
       </header>
-      <div className={"flex flex-col gap-3"}>
-        {histories &&
-          histories.map((history, idx) => {
-            return <HistoryCard key={history.surveyDto.surveyId} data={history} isFirst={idx === 0} />;
-          })}
-      </div>
+      <Suspense fallback={<Loading />}>
+        <HistoryList />
+      </Suspense>
     </div>
   );
 }
