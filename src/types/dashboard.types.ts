@@ -3,6 +3,25 @@ export type HistoryDTO = {
   rankings: Array<Ranking>;
 };
 
+export type SurveyRequest = {
+  workPlaceAddress: string;
+  jeonseMin: number;
+  jeonseMax: number;
+  monthlyMin: number;
+  monthlyMax: number;
+  depositMin: number;
+  depositMax: number;
+  preferenceLargeStore: "LOW" | "MIDDLE" | "HIGH";
+  preferenceHospital: "LOW" | "MIDDLE" | "HIGH";
+  preferenceSubway: "LOW" | "MIDDLE" | "HIGH";
+  preferenceLibrary: "LOW" | "MIDDLE" | "HIGH";
+  surveySelectedDistrictList: string[];
+}
+
+export type PreferenceLevel = "LOW" | "MIDDLE" | "HIGH";
+
+export type PartialSurveyRequest = Partial<SurveyRequest>
+
 export type SurveyDto = {
   surveyId: number;
   workPlaceAddress: string | null;
