@@ -22,7 +22,7 @@ function HistoryCard({ data, isFirst }: { data: HistoryDTO; isFirst: boolean }) 
   const handleMoreResult = () => {
     setData(data);
     setState({ type: "DASHBOARD" });
-    navigation("/");
+    navigation("/dashboard");
   };
 
   return (

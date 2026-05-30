@@ -48,7 +48,7 @@ function LegalDetailInfos() {
     fetchDongInfraCnt().then((response) => {
       setDongDetail(response.content);
     });
-  }, [dongDetail]);
+  }, []);
 
   return (
     dongInfo && (

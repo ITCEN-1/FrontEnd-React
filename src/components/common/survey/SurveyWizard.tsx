@@ -18,52 +18,65 @@ function SurveyWizard(){
     const [wolseDep, setWolseDep] = useState<number[]|null>(null);        // 보증금, 0~20000 (2억)
     const [wolseMon, setWolseMon] = useState<number[]|null>(null);             // 월세, 0~150
 
-    const canAdvanceDistrictStep = districts.length>0;
-    const { request,setRequest } = useSurveyRequestStore();
+  const canAdvanceDistrictStep = districts.length > 0;
+  // const { request,setRequest } = useSurveyRequestStore();
 
-    const prev=()=>{
-      if (surveyStep > 1) setSurveyStep(surveyStep - 1);
-    };
-    const next=()=>{
-      if (!canAdvanceDistrictStep) return;
-      if(surveyStep===4){
-        //지금까지 state로 설문 저장 api 요청
+  const prev = () => {
+    if (surveyStep > 1) setSurveyStep(surveyStep - 1);
+  };
+  const next = () => {
+    if (!canAdvanceDistrictStep) return;
+    if (surveyStep === 4) {
+      //지금까지 state로 설문 저장 api 요청
+    }
+    if (surveyStep < 4) setSurveyStep(surveyStep + 1);
+  };
 
-
-      }
-      if (surveyStep < 4) setSurveyStep(surveyStep + 1);
-    };
-
-    return(
-        <div className={"dp-onboard-wrap" + (surveyStep === 1 ? " dp-onboard-wrap--wide" : "")}>
-            <SurveyProgressBar step={surveyStep}></SurveyProgressBar>
-            {surveyStep===1 && <DistrictStep districts={districts} setDistricts={setDistricts}/>}
-            {surveyStep===2 && <InfraStep preferenceLargeStore={preferenceLargeStore} setPreferenceLargeStore={setPreferenceLargeStore} preferenceHospital={preferenceHospital} setPreferenceHospital={setPreferenceHospital} preferenceSubway={preferenceSubway} setPreferenceSubway={setPreferenceSubway} preferenceLibrary={preferenceLibrary} setPreferenceLibrary={setPreferenceLibrary}/>}
-            {surveyStep===3 && <BudgetStep jeonse={jeonse} setJeonse={setJeonse} wolseDep={wolseDep} setWolseDep={setWolseDep} wolseMon={wolseMon} setWolseMon={setWolseMon}/>}
-            {surveyStep===4 && <CommuteStep />}
-        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 32 }}>
-          <button className={"dp-btn"} onClick={prev}>{surveyStep === 1 ? "← 첫 화면" : "← 이전"}</button>
-          <button className={"dp-btn dp-btn--primary"} onClick={next} disabled={!canAdvanceDistrictStep}>
-            {surveyStep < 4 ? "다음 단계 →" : "추천 받기"}
-          </button>
-        </div>
-        </div>
-    );
+  return (
+    <div className={"dp-onboard-wrap" + (surveyStep === 1 || surveyStep === 4 ? " dp-onboard-wrap--wide" : "")}>
+      <SurveyProgressBar step={surveyStep}></SurveyProgressBar>
+      {surveyStep === 1 && <DistrictStep districts={districts} setDistricts={setDistricts} />}
+      {surveyStep === 2 && (
+        <InfraStep
+          infraProps={{
+            preferenceLargeStore,
+            setPreferenceLargeStore,
+            preferenceHospital,
+            setPreferenceHospital,
+            preferenceSubway,
+            setPreferenceSubway,
+            preferenceLibrary,
+            setPreferenceLibrary,
+          }}
+        />
+      )}
+      {surveyStep === 3 && <BudgetStep />}
+      {surveyStep === 4 && <CommuteStep />}
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 32 }}>
+        <button className={"dp-btn"} onClick={prev}>
+          {surveyStep === 1 ? "← 첫 화면" : "← 이전"}
+        </button>
+        <button className={"dp-btn dp-btn--primary"} onClick={next} disabled={!canAdvanceDistrictStep}>
+          {surveyStep < 4 ? "다음 단계 →" : "추천 받기"}
+        </button>
+      </div>
+    </div>
+  );
 }
 
-function SurveyProgressBar({step}: {step: number}){
-    const pct=((step)/4)*100;
-    return(
+function SurveyProgressBar({ step }: { step: number }) {
+  const pct = (step / 4) * 100;
+  return (
     <div className="dp-progress">
       <div className="dp-progress__head">
         <h4>설문 진행 상황</h4>
         <b>{step} / 4 단계</b>
       </div>
       <div className="dp-progress__track">
-        <div className="dp-progress__fill" style={{ width: `${pct}%` }}/>
+        <div className="dp-progress__fill" style={{ width: `${pct}%` }} />
       </div>
     </div>
-    )
+  );
 }
 
 export default SurveyWizard;
