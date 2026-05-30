@@ -2,19 +2,17 @@ import type { Dispatch, SetStateAction } from "react";
 import type {PreferenceLevel } from "../../../types/dashboard.types";
 
 interface InfraStepProps {
-    infraProps: {
-        preferenceLargeStore: PreferenceLevel;
-        setPreferenceLargeStore: Dispatch<SetStateAction<PreferenceLevel>>;
-        preferenceHospital: PreferenceLevel;
-        setPreferenceHospital: Dispatch<SetStateAction<PreferenceLevel>>;
-        preferenceSubway: PreferenceLevel;
-        setPreferenceSubway: Dispatch<SetStateAction<PreferenceLevel>>;
-        preferenceLibrary: PreferenceLevel;
-        setPreferenceLibrary: Dispatch<SetStateAction<PreferenceLevel>>;
-    };
+    preferenceLargeStore: PreferenceLevel;
+    setPreferenceLargeStore: Dispatch<SetStateAction<PreferenceLevel>>;
+    preferenceHospital: PreferenceLevel;
+    setPreferenceHospital: Dispatch<SetStateAction<PreferenceLevel>>;
+    preferenceSubway: PreferenceLevel;
+    setPreferenceSubway: Dispatch<SetStateAction<PreferenceLevel>>;
+    preferenceLibrary: PreferenceLevel;
+    setPreferenceLibrary: Dispatch<SetStateAction<PreferenceLevel>>;
 }
 
-function InfraStep({ infraProps }: InfraStepProps){
+function InfraStep({ preferenceLargeStore, setPreferenceLargeStore, preferenceHospital, setPreferenceHospital, preferenceSubway, setPreferenceSubway, preferenceLibrary, setPreferenceLibrary }: InfraStepProps){
 
     return(
         <div className={"dp-card"}>
@@ -22,10 +20,10 @@ function InfraStep({ infraProps }: InfraStepProps){
                 <h2 style={{ fontSize: 22, fontWeight: 700, color: "var(--dp-navy-900)" }}>인프라, 무엇이 중요한가요?</h2>
                 <p style={{ marginTop: 6, fontSize: 13, color: "var(--fg-2)" }}>네 가지 항목의 중요도를 알려주세요. 가중치로 반영돼요.</p>
             </div>
-            <Train preferenceSubway={infraProps.preferenceSubway} setPreferenceSubway={infraProps.setPreferenceSubway} />
-            <LargeStore preferenceLargeStore={infraProps.preferenceLargeStore} setPreferenceLargeStore={infraProps.setPreferenceLargeStore}/>
-            <Library preferenceLibrary={infraProps.preferenceLibrary} setPreferenceLibrary={infraProps.setPreferenceLibrary}/>
-            <Hospital preferenceHospital={infraProps.preferenceHospital} setPreferenceHospital={infraProps.setPreferenceHospital}/>
+            <Train preferenceSubway={preferenceSubway} setPreferenceSubway={setPreferenceSubway} />
+            <LargeStore preferenceLargeStore={preferenceLargeStore} setPreferenceLargeStore={setPreferenceLargeStore}/>
+            <Library preferenceLibrary={preferenceLibrary} setPreferenceLibrary={setPreferenceLibrary}/>
+            <Hospital preferenceHospital={preferenceHospital} setPreferenceHospital={setPreferenceHospital}/>
         </div>
     )
 }

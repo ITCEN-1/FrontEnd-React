@@ -7,13 +7,16 @@ import "../../../styles.css";
 import useSurveyRequestStore from "../../../store/request.store";
 import type { PreferenceLevel } from "../../../types/dashboard.types";
 
-function SurveyWizard() {
-  const [surveyStep, setSurveyStep] = useState<number>(1);
-  const [districts, setDistricts] = useState<string[]>([]);
-  const [preferenceLargeStore, setPreferenceLargeStore] = useState<PreferenceLevel>("LOW");
-  const [preferenceHospital, setPreferenceHospital] = useState<PreferenceLevel>("LOW");
-  const [preferenceSubway, setPreferenceSubway] = useState<PreferenceLevel>("LOW");
-  const [preferenceLibrary, setPreferenceLibrary] = useState<PreferenceLevel>("LOW");
+function SurveyWizard(){
+    const [surveyStep,setSurveyStep] = useState<number>(1);
+    const [districts,setDistricts] = useState<string[]>([])
+    const [preferenceLargeStore,setPreferenceLargeStore] = useState<PreferenceLevel>("LOW");
+    const [preferenceHospital,setPreferenceHospital] = useState<PreferenceLevel>("LOW");
+    const [preferenceSubway,setPreferenceSubway] = useState<PreferenceLevel>("LOW");
+    const [preferenceLibrary,setPreferenceLibrary] = useState<PreferenceLevel>("LOW");
+    const [jeonse, setJeonse] = useState<number[]|null>([0, 100000]);          // 만원 단위, 0~100000 (10억)
+    const [wolseDep, setWolseDep] = useState<number[]|null>(null);        // 보증금, 0~20000 (2억)
+    const [wolseMon, setWolseMon] = useState<number[]|null>(null);             // 월세, 0~150
 
   const canAdvanceDistrictStep = districts.length > 0;
   // const { request,setRequest } = useSurveyRequestStore();
